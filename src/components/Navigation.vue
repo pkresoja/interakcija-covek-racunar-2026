@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
+    <nav class="navbar navbar-expand-lg bg-custom mb-3">
         <div class="container-fluid">
             <RouterLink class="navbar-brand" to="/">
                <i class="bi bi-camera-reels"></i> Filmovi
@@ -31,3 +31,14 @@
         </div>
     </nav>
 </template>
+
+<style>
+.bg-custom {
+    border: 1px solid #2d3139;
+    padding: 12px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    background: #252832;
+    box-shadow: 0 8px 25px rgba(20, 25, 35, 0.035);
+}
+</style>
