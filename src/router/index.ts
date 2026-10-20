@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 import DetailsView from '@/views/DetailsView.vue'
 import LoginView from '@/views/LoginView.vue'
+import OrderView from '@/views/OrderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,13 @@ const router = createRouter({
       component: AboutView,
       meta: {
         title: 'About'
+      }
+    },
+    {
+      path: '/movie/:perma/order',
+      component: OrderView,
+      meta: {
+        title: 'New Order'
       }
     },
     {

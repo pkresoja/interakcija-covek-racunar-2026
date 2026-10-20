@@ -49,7 +49,7 @@ const handleLogin = async () => {
                 <div class="col-12 col-lg-6 login-brand-col d-none d-lg-flex flex-column justify-content-between p-5">
                     <div class="brand-top">
                         <span class="badge-accent">
-                            <i class="bi bi-camera-reels me-2"></i>PEQULA CINEMA
+                            <i class="bi bi-camera-reels me-2"></i>MY CINEMA
                         </span>
                     </div>
 
@@ -74,10 +74,6 @@ const handleLogin = async () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="brand-footer text-white-50 small">
-                        &copy; 2026 Pequla Cinema. Sva prava zadržana.
                     </div>
                 </div>
 
@@ -107,7 +103,6 @@ const handleLogin = async () => {
                                         placeholder="vas@email.com" required />
                                 </div>
                             </div>
-
                             <div class="mb-4">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <label for="password"

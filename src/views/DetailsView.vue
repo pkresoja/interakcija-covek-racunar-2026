@@ -1,49 +1,13 @@
 <script lang="ts" setup>
 import Navigation from '@/components/Navigation.vue';
-import { getAvgRGB } from '@/uitls';
-import axios from 'axios';
+import type { MovieModel } from '@/models/movie.model';
+import { MovieService } from '@/services/movie.service';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-interface Actor {
-    actorId: number;
-    name: string;
-}
-
-interface MovieActor {
-    movieActorId: number;
-    actor: Actor;
-}
-
-interface MovieGenre {
-    movieGenreId: number;
-    genre: {
-        genreId: number;
-        name: string;
-    };
-}
-
-interface Movie {
-    movieId: number;
-    title: string;
-    originalTitle: string;
-    description: string;
-    shortDescription: string;
-    poster: string;
-    startDate: string;
-    runTime: number;
-    active: boolean;
-    director: {
-        directorId: number;
-        name: string;
-    };
-    movieActors: MovieActor[];
-    movieGenres: MovieGenre[];
-}
-
 const route = useRoute();
 
-const movie = ref<Movie | null>(null);
+const movie = ref<MovieModel | null>(null);
 const loading = ref(true);
 const error = ref('');
 
@@ -56,8 +20,6 @@ const formatDate = (date: string) => {
         year: 'numeric',
     }).format(new Date(`${date}T12:00:00`));
 };
-
-// const hex = ref<string>('#FFF')
 
 watch(
     () => route.params.perma,
@@ -74,14 +36,8 @@ watch(
         movie.value = null;
 
         try {
-            const response = await axios.get<Movie>(
-                `https://movie.pequla.com/api/movie/short/${encodeURIComponent(String(perma))}`
-            );
-
+            const response = await MovieService.getDetails(encodeURIComponent(String(perma)))
             movie.value = response.data;
-            // const rgb = await getAvgRGB(movie.value!.poster)
-            // hex.value = rgb.hex
-
         } catch {
             error.value = 'Došlo je do greške prilikom učitavanja filma.';
         } finally {
@@ -106,7 +62,6 @@ watch(
         </div>
 
         <template v-else-if="movie">
-            <!-- <pre>{{ hex }}</pre> -->
             <!-- Movie hero -->
             <section class="movie-hero">
                 <div class="container position-relative">
@@ -163,11 +118,16 @@ watch(
                                     {{ movie.shortDescription }}
                                 </p>
 
-                                <div class="movie-director">
-                                    <span class="director-label">REŽIJA</span>
-                                    <span class="director-name">
-                                        {{ movie.director.name.trim() }}
-                                    </span>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="movie-director">
+                                        <span class="director-label">REŽIJA</span>
+                                        <span class="director-name">
+                                            {{ movie.director.name.trim() }}
+                                        </span>
+                                    </div>
+                                    <RouterLink class="btn btn-success" :to="`/movie/${route.params.perma}/order`">
+                                       <i class="bi bi-box-arrow-up-right"></i> Naruči odmah
+                                    </RouterLink>
                                 </div>
                             </div>
                         </div>
