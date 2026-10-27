@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import Navigation from '@/components/Navigation.vue';
+import { UserService } from '@/services/user.service';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -20,22 +21,14 @@ const handleLogin = async () => {
     loading.value = true;
     error.value = '';
 
-    try {
-        // Replace with your actual login endpoint
-        const response = await axios.post('https://movie.pequla.com/api/auth/login', {
-            email: email.value,
-            password: password.value,
-        });
+    if (UserService.login(email.value, password.value)) {
+        router.push('/account')
+        return
+    } 
 
-        // Handle successful login (e.g., save token, redirect)
-        // localStorage.setItem('token', response.data.token);
-        router.push('/');
-    } catch (err: any) {
-        error.value = err.response?.data?.message || 'Pogrešni pristupni podaci ili greška na serveru.';
-    } finally {
-        loading.value = false;
-    }
-};
+    error.value = 'Proverite svoje korisiničko ime ili lozinku!'
+    loading.value = false
+}
 </script>
 
 <template>
