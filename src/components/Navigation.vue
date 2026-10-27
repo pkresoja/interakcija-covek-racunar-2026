@@ -25,6 +25,11 @@
                            <i class="bi bi-info-circle"></i> O aplikacji
                         </RouterLink>
                     </li>
+                    <li class="nav-item">
+                        <RouterLink class="nav-link" active-class="active" to="/cart">
+                           <i class="bi bi-bag-check"></i> Moje Rezervacije
+                        </RouterLink>
+                    </li>
                 </ul>
                 <slot></slot>
             </div>

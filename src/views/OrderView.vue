@@ -62,8 +62,8 @@ const handleOrder = () => {
 
     successMessage.value = true;
     setTimeout(() => {
-        router.push('/orders');
-    }, 2500);
+        router.push('/cart');
+    }, 1500);
 };
 
 const formatDate = (date: string) => {

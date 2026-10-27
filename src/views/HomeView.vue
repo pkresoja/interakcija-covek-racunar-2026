@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Navigation from '@/components/Navigation.vue';
 import type { SimpleModel } from '@/models/simple.model';
-import axios from 'axios';
+import { MovieService } from '@/services/movie.service';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -10,10 +10,10 @@ const filtered = ref<SimpleModel[]>([])
 const search = ref<string>('')
 const router = useRouter()
 
-axios.get<SimpleModel[]>('https://movie.pequla.com/api/movie/simple')
-  .then(rsp => {
-    movies.value = rsp.data
-    filtered.value = rsp.data
+MovieService.getMovies()
+  .then(data => {
+    movies.value = data
+    filtered.value = data
   })
 
 const updateMovies = () => {
@@ -48,7 +48,7 @@ watch(search, updateMovies)
       </div>
     </div>
   </div>
-  
+
   <div v-if="filtered.length == 0 && movies.length > 0">
     We couldn't find any movies for that criteria!
   </div>
