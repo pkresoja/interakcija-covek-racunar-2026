@@ -22,9 +22,11 @@ const handleLogin = async () => {
     error.value = '';
 
     if (UserService.login(email.value, password.value)) {
-        router.push('/account')
+        const from = sessionStorage.getItem('from')
+        sessionStorage.removeItem('from')
+        router.push(from ?? '/account')
         return
-    } 
+    }
 
     error.value = 'Proverite svoje korisiničko ime ili lozinku!'
     loading.value = false

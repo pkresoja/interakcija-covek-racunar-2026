@@ -6,7 +6,7 @@ const year = new Date().getFullYear()
 
 <template>
   <div class="container">
-    <RouterView />
+    <RouterView :key="$route.fullPath"/>
     <footer class="my-3 text-center">
       <span>&copy; {{ year }} - Interakcija čovek računar</span><br>
       <span>Univerzitet Singidunum</span>

@@ -17,6 +17,17 @@ export class MovieService {
         return await client.get<MovieModel>(`/short/${permalink}`)
     }
 
+    static async getMoviesByGenreId(id: number) {
+        const rsp = await client.request<MovieModel[]>({
+            method: 'GET',
+            params: {
+                genre: id
+            }
+        })
+
+        return rsp.data.sort((m1, m2) => m2.movieId - m1.movieId).slice(0, 4)
+    }
+
     static async getMoviesByIds(ids: number[]) {
         return await client.request<MovieModel[]>({
             url: '/list',

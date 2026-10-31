@@ -7,7 +7,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
-const orders = ref<OrderModel[]>()
+const orders = ref<OrderModel[]>([])
 UserService.getOrdersWithMovieObjectIncluded()
     .then(data => orders.value = data)
 
@@ -19,6 +19,13 @@ function getTotal() {
 function pay() {
     if (!confirm('Pay all?'))
         return
+
+    if (!UserService.getActiveUser()) {
+        sessionStorage.setItem('from', '/cart')
+        router.push('/login')
+        return
+    }
+
     UserService.pay()
     router.push('/account')
 }
@@ -27,7 +34,7 @@ function pay() {
 <template>
     <Navigation />
     <div class="card">
-        <div class="card-body">
+        <div class="card-body" v-if="orders.length > 0">
             <table class="table">
                 <thead>
                     <tr>
@@ -55,9 +62,13 @@ function pay() {
             <div class="d-flex justify-content-between align-items-center mx-2">
                 <span class="h5">Ukupno: {{ getTotal() }} RSD</span>
                 <button type="button" class="btn btn-success" @click="pay()">
-                    <i class="bi bi-credit-card"></i> Plati
+                    <i class="bi bi-credit-card"></i> {{ UserService.getActiveUser() ? 'Plati' : 'Prijavi se i plati' }}
                 </button>
             </div>
+        </div>
+        <div class="card-body text-center" v-else>
+            <p class="h3">Nemate ništa u korpi!</p>
+            <RouterLink to="/" class="btn btn-outline-primary">Pogeldajte ponudu filmova</RouterLink>
         </div>
     </div>
 </template>
