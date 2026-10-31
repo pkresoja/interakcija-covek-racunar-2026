@@ -20,7 +20,7 @@ MovieService.getDetails(route.params.perma as string)
 import Navigation from '@/components/Navigation.vue';
 import type { MovieModel } from '@/models/movie.model';
 import { MovieService } from '@/services/movie.service';
-import { OrderService } from '@/services/order.service';
+import { UserService } from '@/services/user.service';
 
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -57,7 +57,7 @@ const handleOrder = () => {
 
     // Call the mock service for each selected seat
     selectedSeats.value.forEach(seat => {
-        OrderService.createOrder(movie.value!.movieId, selectedTime.value, seat);
+        UserService.createOrder(movie.value!.movieId, selectedTime.value, seat);
     });
 
     successMessage.value = true;

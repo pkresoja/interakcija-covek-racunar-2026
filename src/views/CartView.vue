@@ -1,17 +1,26 @@
 <script lang="ts" setup>
 import Navigation from '@/components/Navigation.vue';
 import type { OrderModel } from '@/models/order.model';
-import { OrderService } from '@/services/order.service';
+import { UserService } from '@/services/user.service';
 import { getPrice } from '@/uitls';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const orders = ref<OrderModel[]>()
-OrderService.getOrdersWithMovieObjectIncluded()
+UserService.getOrdersWithMovieObjectIncluded()
     .then(data => orders.value = data)
 
 function getTotal() {
     return orders.value?.map(o => getPrice(o.seat))
         .reduce((sum, price) => sum + price)
+}
+
+function pay() {
+    if (!confirm('Pay all?'))
+        return
+    UserService.pay()
+    router.push('/account')
 }
 </script>
 
@@ -45,7 +54,7 @@ function getTotal() {
             </table>
             <div class="d-flex justify-content-between align-items-center mx-2">
                 <span class="h5">Ukupno: {{ getTotal() }} RSD</span>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" @click="pay()">
                     <i class="bi bi-credit-card"></i> Plati
                 </button>
             </div>

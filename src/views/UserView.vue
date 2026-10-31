@@ -7,5 +7,6 @@ import { UserService } from '@/services/user.service';
 
 <template>
     <Navigation />
-    {{ UserService.getActiveUser() }}
+    <pre>
+    {{ UserService.getActiveUser() }}</pre>
 </template>

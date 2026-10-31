@@ -1,9 +1,10 @@
 import type { MovieModel } from "./movie.model"
 
 export interface OrderModel {
-    movieId: number,
+    movieId: number
     movie?: MovieModel
-    time: string,
-    seat: string,
+    time: string
+    seat: string
     createdAt: string
+    paidAt?: string
 }

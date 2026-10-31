@@ -60,7 +60,7 @@ function logout() {
                 </ul>
                 <slot>
                     <span v-if="UserService.getActiveUser()">
-                        <i class="bi bi-envelope-at"></i> {{ UserService.getActiveUser().email }}
+                        <i class="bi bi-envelope-at"></i> {{ UserService.getActiveUser()?.email }}
                     </span>
                 </slot>
             </div>
