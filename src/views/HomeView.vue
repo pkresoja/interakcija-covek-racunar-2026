@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import type { SimpleModel } from '@/models/simple.model';
 import { MovieService } from '@/services/movie.service';
@@ -53,7 +54,5 @@ watch(search, updateMovies)
     We couldn't find any movies for that criteria!
   </div>
 
-  <div v-if="movies.length == 0">
-    Movies are loading... Please wait!
-  </div>
+  <Loading v-if="movies.length == 0" />
 </template>

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Loading from '@/components/Loading.vue';
 import Navigation from '@/components/Navigation.vue';
 import type { OrderModel } from '@/models/order.model';
 import { UserService } from '@/services/user.service';
@@ -8,6 +9,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const orders = ref<OrderModel[]>([])
+const rawOrders = UserService.getOrders()
 UserService.getOrdersWithMovieObjectIncluded()
     .then(data => orders.value = data)
 
@@ -29,12 +31,21 @@ function pay() {
     UserService.pay()
     router.push('/account')
 }
+
+function removeOrder(order: OrderModel) {
+    if (!confirm(`Obrisi rezervaciju za ${order.seat} ${order.movie?.title} u ${order.time}h?`)) {
+        return
+    }
+
+    UserService.removeOrder(order)
+    orders.value = orders.value.filter(o => o.createdAt !== order.createdAt)
+}
 </script>
 
 <template>
     <Navigation />
-    <div class="card">
-        <div class="card-body" v-if="orders.length > 0">
+    <div class="card" v-if="orders.length > 0 && rawOrders.length > 0">
+        <div class="card-body">
             <table class="table">
                 <thead>
                     <tr>
@@ -55,7 +66,11 @@ function pay() {
                         <td>{{ order.time }}</td>
                         <td>{{ order.seat }}</td>
                         <td>{{ getPrice(order.seat) }} RSD</td>
-                        <td>/</td>
+                        <td>
+                            <button type="button" @click="removeOrder(order)" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash-fill"></i> Obriši
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -66,7 +81,12 @@ function pay() {
                 </button>
             </div>
         </div>
-        <div class="card-body text-center" v-else>
+    </div>
+
+    <Loading v-else-if="rawOrders.length > 0" />
+
+    <div class="card" v-else>
+        <div class="card-body text-center">
             <p class="h3">Nemate ništa u korpi!</p>
             <RouterLink to="/" class="btn btn-outline-primary">Pogeldajte ponudu filmova</RouterLink>
         </div>

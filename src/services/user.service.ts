@@ -14,7 +14,7 @@ export class UserService {
                 lastName: 'User',
                 email: 'user@example.com',
                 password: 'user123',
-                genre: 'Drama',
+                genreId: 2,
                 orders: []
             }]))
         }
@@ -42,8 +42,19 @@ export class UserService {
         localStorage.setItem(ORDER_KEY, JSON.stringify(orders))
     }
 
+    static removeOrder(order: OrderModel) {
+        const orders = this.getOrders()
+        localStorage.setItem(ORDER_KEY, JSON.stringify(
+            orders.filter(obj => obj.createdAt != order.createdAt)
+        ))
+    }
+
     static async getOrdersWithMovieObjectIncluded() {
         const orders = this.getOrders()
+        return await this.mapMovieObjectToOrders(orders)
+    }
+
+    static async mapMovieObjectToOrders(orders: OrderModel[]) {
         const ids = orders.map(o => o.movieId)
         const movies = await MovieService.getMoviesByIds(ids)
 

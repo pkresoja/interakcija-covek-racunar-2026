@@ -1,3 +1,5 @@
+import type { GenreModel } from "./genre.model"
+
 export interface MovieModel {
     movieId: number
     title: string
@@ -7,6 +9,7 @@ export interface MovieModel {
     poster: string
     startDate: string
     runTime: number
+    shortUrl: string
     active: boolean
     director: {
         directorId: number
@@ -21,9 +24,6 @@ export interface MovieModel {
     }[]
     movieGenres: {
         movieGenreId: number
-        genre: {
-            genreId: number
-            name: string
-        }
+        genre: GenreModel
     }[]
 }
