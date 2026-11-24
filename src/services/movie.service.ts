@@ -13,6 +13,10 @@ export class MovieService {
         return rsp.data.sort((m1, m2) => m2.movieId - m1.movieId)
     }
 
+    static async getMovieById(id: number) {
+        return await client.get<MovieModel>(`/movie/${id}`)
+    }
+
     static async getDetails(permalink: string) {
         return await client.get<MovieModel>(`/movie/short/${permalink}`)
     }
